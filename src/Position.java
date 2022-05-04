@@ -25,33 +25,22 @@ public class Position {
 
     public boolean isEqualTo(Position other) {
 
-        if (other != null && this.column == other.column && this.row == other.row) {
-            return true;
-        }
-        return false;
+        return other != null && this.column == other.column && this.row == other.row;
     }
 
     public static int pathLength(Position pos1, Position pos2) {
         // pos1 aligned with pos2 horizontally, vertically or diagonally
         if (pos1.row == pos2.row) {
-            return Math.abs(pos1.column - pos2.column) + 1;
+            return checkDistance(pos1.column, pos2.column);
 
-        } else if (pos1.column == pos2.column) {
-            return Math.abs(pos1.row - pos2.row) + 1;
-        } else if (checkDiagonalPathLength(pos1, pos2) != 0) {
-            return checkDiagonalPathLength(pos1, pos2);
+        } else {
+            return checkDistance(pos1.row, pos2.row);
+
         }
-        return 0;
     }
 
-    private static int checkDiagonalPathLength(Position pos1, Position pos2) {
-        int position;
-        if (Math.min(pos1.row, pos2.row) == pos1.row) {
-
-            return (pos2.row - pos1.row) + 1;
-        } else {
-            return (pos1.row - pos2.row) + 1;
-        }
+    private static int checkDistance(int pos1, int pos2) {
+        return Math.abs(pos1 - pos2) + 1;
 
     }
 }

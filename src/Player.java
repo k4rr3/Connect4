@@ -10,25 +10,17 @@ public class Player {
     }
 
     public boolean isEqualTo(Player other) {
-        if (other == null || other.id != this.id) {
-            return false;
-        }
-        return true;
+        //return !(other == null || other.id != this.id);
+        return other != null && other.id == this.id;
     }
 
     public boolean isOne() {
 
-        if (this.id == '1') {
-            return true;
-        }
-        return false;
+        return this.id == '1';
     }
 
     public boolean isTwo() {
-        if (this.id == '2') {
-            return true;
-        }
-        return false;
+        return this.id == '2';
     }
 
     // Only for testing

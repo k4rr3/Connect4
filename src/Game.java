@@ -21,8 +21,7 @@ public class Game {
 
     public Move play(int column) {
         // !isFinished
-        Player player = whoIsPlaying();
-        Move move = new Move(player, board.play(column, player));
+        Move move = new Move(whoIsPlaying(), board.play(column, whoIsPlaying()));
         checkMatchStatus(move);
         if (!isFinished()) {
             nextTurn();
@@ -51,10 +50,7 @@ public class Game {
     public boolean isFinished() {
 
         // checkMatchStatus();
-        if (status == Status.ONE_HAS_WON || status == Status.TWO_HAS_WON || status == Status.DRAW) {
-            return true;
-        }
-        return false;
+        return status == Status.ONE_HAS_WON || status == Status.TWO_HAS_WON || status == Status.DRAW;
     }
     // Only for testing
 

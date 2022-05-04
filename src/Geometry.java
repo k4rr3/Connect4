@@ -15,22 +15,20 @@ public class Geometry {
     }
 
     public double getRowHeight() {
-        return (double) ((Math.round(windowHeight / displayRows) / 100) * 100);//redondeamos a las centenas
-
+        //return (double) ((Math.round(windowHeight / displayRows) / 100) * 100);//redondeamos a las centenas
+        return (double) windowHeight / displayRows;
     }
 
     public double getColumnWidth() {
-        return (double) ((Math.round(windowWidth / displayColumns) / 100) * 100);//redondeamos a las centenas
+        //return (double) ((Math.round() / 100) * 100);//redondeamos a las centenas
+        return (double) windowWidth / displayColumns;
     }
 
     public double getDiskHeight() {
-        return (double) getRowHeight() - ((padding / 2) * getRowHeight() * 2);
+        return (double) getRowHeight() - (padding * getRowHeight());
     }
 
-    public double getDiskWidth() {
-
-        return (double) getColumnWidth() - ((padding / 2) * getColumnWidth() * 2);
-    }
+    public double getDiskWidth() { return (double) getColumnWidth() - (padding * getColumnWidth());}
 
     public double columnToCenterX(int column) {
         return (double) getColumnWidth() * column + getColumnWidth() / 2;

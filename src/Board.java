@@ -15,33 +15,11 @@ public class Board {
 
     public boolean canPlayColumn(int column) {
 
-        if (column >= 0 && column <= cells.length && columnNotFilled(column)) {
-            return true;
-        }
-        return false;
+        return column >= 0 && column < numColumns && cells[0][column] == null;
     }
-
-    private boolean columnNotFilled(int column) {
-        int filledCells = getFilledCells(column);
-        if (filledCells == cells.length) {
-            return false;
-        }
-        return true;
-    }
-
-    private int getFilledCells(int column) {
-        int filledCells = 0;
-        for (int i = 0; i < cells.length; i++) {
-            if (cells[i][column] != null) {
-                filledCells++;
-            }
-        }
-        return filledCells;
-    }
-
 
     public boolean hasValidMoves() {
-        for (int i = 0; i < cells[0].length; i++) {
+        for (int i = 0; i < numColumns; i++) {
             if (canPlayColumn(i)) {
                 return true;
             }
@@ -53,21 +31,27 @@ public class Board {
         if (!canPlayColumn(column)) {
             return null;
         }
-        int row = getLastEmptyRow(column);
+        int row = lastEmptyRow(column);
         cells[row][column] = player; //anotamos el movimiento del jugador en la tabla
         return new Position(row, column);
 
     }
 
-    private int getLastEmptyRow(int column) {
-        return Math.abs(getFilledCells(column) - 2);
+    private int getEmptyCells(int column) {
+        int emptyCells = 0;
+        for (int i = 0; i < numRows; i++) {
+            if (cells[i][column] == null) {
+                emptyCells++;
+            }
+        }
+        return emptyCells;
     }
 
     public int lastEmptyRow(int column) {
         if (!canPlayColumn(column)) {
             return -1;
         }
-        return getLastEmptyRow(column);
+        return getEmptyCells(column) - 1;
 
     }
 
@@ -76,7 +60,6 @@ public class Board {
         //checkingConnectedinRows;
         int maxConnected = 1;
         maxConnected = checkConnectedInDirection(position, Direction.DOWN) + checkConnectedInDirection(position, Direction.DOWN.invert());
-
         maxConnected = Math.max(maxConnected, checkConnectedInDirection(position, Direction.RIGHT) + checkConnectedInDirection(position, Direction.RIGHT.invert()));
         maxConnected = Math.max(maxConnected, checkConnectedInDirection(position, Direction.MAIN_DIAGONAL) + checkConnectedInDirection(position, Direction.MAIN_DIAGONAL.invert()));
         maxConnected = Math.max(maxConnected, checkConnectedInDirection(position, Direction.CONTRA_DIAGONAL) + checkConnectedInDirection(position, Direction.CONTRA_DIAGONAL.invert()));
@@ -86,10 +69,11 @@ public class Board {
 
     private int checkConnectedInDirection(Position position, Direction direction) {
         int maxConnected = 0;
-        Position mainPosition = new Position(position.getRow(), position.getColumn());
+        int mainRow = position.getRow();
+        int mainColumn = position.getColumn();
         position = position.move(direction);
-        while (position.getRow() < cells.length && position.getRow() >= 0 && position.getColumn() < cells[0].length && position.getColumn() >= 0) {
-            if (cells[mainPosition.getRow()][mainPosition.getColumn()] == cells[position.getRow()][position.getColumn()]) {
+        while (isInRange(position)) {
+            if (cells[mainRow][mainColumn] == cells[position.getRow()][position.getColumn()]) {
                 maxConnected++;
                 position = position.move(direction);
             } else {
@@ -98,6 +82,10 @@ public class Board {
 
         }
         return maxConnected;
+    }
+
+    private boolean isInRange(Position position) {
+        return position.getRow() < numRows && position.getRow() >= 0 && position.getColumn() < numColumns && position.getColumn() >= 0;
     }
 
 

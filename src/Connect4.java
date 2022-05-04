@@ -45,7 +45,7 @@ public class Connect4 extends GraphicsProgram {
     }
     @Override
     public void mouseClicked(final MouseEvent e) {
-        // This code is invoked on the EVT tread
+        // This code is invoked on the EVT thread
         // I have to move its execution to a "normal" thread
         // because to show the animation it pauses the
         // execution thread and EVT should not be paused.
